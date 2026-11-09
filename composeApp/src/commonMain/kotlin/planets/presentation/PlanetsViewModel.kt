@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import planets.domain.domain.Planet
 import planets.domain.repository.PlanetsRepository
+import planets.domain.repository.Result
 
 data class PlanetsState(
     val isLoading: Boolean = false,
@@ -31,9 +32,26 @@ class PlanetsViewModel(
     private fun getPlanets() {
         viewModelScope.launch(getPlatform().dispatcherIO) {
             _state.update { it.copy(isLoading = true) }
-            val planets = planetsRepository.getPlanets()
-            if (planets.isNotEmpty()){
-                _state.update { it.copy(isLoading = false, planets = planets) }
+
+            when (val result = planetsRepository.getPlanets()) {
+                is Result.Success -> {
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            planets = result.data,
+                            message = ""
+                        )
+                    }
+                }
+
+                is Result.Error -> {
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            message = "loading_error"
+                        )
+                    }
+                }
             }
         }
     }

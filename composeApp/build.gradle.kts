@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.detekt)
 }
 
 kotlin {
@@ -68,6 +69,7 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.bundles.koin.common)
             implementation(libs.bundles.coil.common)
+            implementation(libs.ktor.client.core)
 
         }
         commonTest.dependencies {

@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
@@ -45,6 +44,12 @@ import getPlatform
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import planets.domain.domain.Planet
+import org.jetbrains.compose.resources.stringResource
+import solarsystemkmp.composeapp.generated.resources.Res
+import solarsystemkmp.composeapp.generated.resources.view
+import solarsystemkmp.composeapp.generated.resources.loading_error
+import solarsystemkmp.composeapp.generated.resources.about
+import androidx.compose.foundation.layout.wrapContentHeight
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -52,6 +57,7 @@ fun SharedTransitionScope.PlanetsScreen(
     modifier: Modifier = Modifier,
     animatedVisibilityScope: AnimatedVisibilityScope,
     navigateToPlanetDetailScreen: (Int) -> Unit,
+    navigateToAboutScreen: () -> Unit,
 ) {
 
     val planetsViewModel = koinInject<PlanetsViewModel>()
@@ -70,39 +76,54 @@ fun SharedTransitionScope.PlanetsScreen(
                 .padding(paddingValues)
                 .fillMaxSize(),
         ) {
+            if (state.message.isNotBlank()) {
+                Text(
+                    text = stringResource(Res.string.loading_error),
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            } else {
+                Column(
+                    modifier = modifier.fillMaxSize()
+                ) {
 
-            Column(
-                modifier = modifier.fillMaxSize()
-            ) {
+                    HorizontalPager(
+                        state = pagerState,
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .weight(1f),
+                        userScrollEnabled = when {
+                            getPlatform().type == Type.MOBILE -> true
+                            getPlatform().type == Type.NON_MOBILE && isCompacted -> true
+                            else -> false
+                        }
+                    ) { page ->
 
-                HorizontalPager(
-                    state = pagerState,
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    userScrollEnabled = when {
-                        getPlatform().type == Type.MOBILE -> true
-                        getPlatform().type == Type.NON_MOBILE && isCompacted -> true
-                        else -> false
+                        PageItem(
+                            animatedVisibilityScope = animatedVisibilityScope,
+                            planet = state.planets.sortedBy { it.planetOrder }[page],
+                            navigateToPlanetDetailScreen = navigateToPlanetDetailScreen
+                        )
+
                     }
-                ) { page ->
 
-                    PageItem(
-                        animatedVisibilityScope = animatedVisibilityScope,
-                        planet = state.planets.sortedBy { it.planetOrder }[page],
-                        navigateToPlanetDetailScreen = navigateToPlanetDetailScreen
+                    PageNavigator(
+                        currentPage = pagerState.currentPage,
+                        lastIndex = state.planets.lastIndex,
+                        animateScrollToPage = { page ->
+                            scope.launch { pagerState.animateScrollToPage(page) }
+                        }
                     )
 
-                }
 
-                PageNavigator(
-                    currentPage = pagerState.currentPage,
-                    lastIndex = state.planets.lastIndex,
-                    animateScrollToPage = { page ->
-                        scope.launch { pagerState.animateScrollToPage(page) }
+                    OutlinedButton(
+                        onClick = navigateToAboutScreen,
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                    ) {
+                        Text(text = stringResource(Res.string.about))
                     }
-                )
 
+
+                }
             }
 
             if (state.isLoading) {
@@ -171,7 +192,7 @@ fun SharedTransitionScope.PageItem(
                 }
             ) {
                 Text(
-                    text = "View",
+                    text = stringResource(Res.string.view),
                     fontWeight = FontWeight.Bold
                 )
             }
