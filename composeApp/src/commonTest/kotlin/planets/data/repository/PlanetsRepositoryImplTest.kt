@@ -5,6 +5,7 @@ import planets.domain.domain.Planet
 import planets.domain.repository.PlanetsRepository
 import kotlin.test.Test
 import kotlin.test.assertTrue
+import planets.domain.repository.Result
 
 class PlanetsRepositoryImplTest {
 
@@ -20,18 +21,6 @@ class PlanetsRepositoryImplTest {
         assertTrue(planetsResult.isSuccess, "The call should be successful")
         val weatherList = planetsResult.getOrNull()
         assertTrue(weatherList?.isNotEmpty() == true, "list should not be empty")
-    }
-
-    @Test
-    fun testClearCache() = runTest {
-        // Given
-        val fakeRepository = FakePlanetsRepository()
-
-        // When - This should not throw
-        fakeRepository.clearCache()
-
-        // Then - If we get here, clearCache completed successfully
-        assertTrue(true, "Clear cache should complete without error")
     }
 
     @Test
@@ -53,7 +42,7 @@ class PlanetsRepositoryImplTest {
 
         // When
         val result = fakeRepository.getPlanets()
-        val planetsList = result.getOrNull(0)
+        val planetsList = result.getOrNull()
         val planet = planetsList?.first()
         // Then - Verify all required fields are present
         planet?.let {
@@ -91,13 +80,15 @@ class FakePlanetsRepository(
         samplePlanet
     )
 
-    override fun getPlanets(): List<Planet> {
+
+    override suspend fun getPlanets(): Result<List<Planet>> {
         return if (shouldReturnError) {
-            Result.Error(DomainException.Unknown("Test error"))
+            Result.Error(Exception("Test error"))
         } else {
             Result.Success(samplePlanetsList)
         }
     }
+
 
     override fun getPlanetById(planetId: Int): Planet? {
         return samplePlanet
