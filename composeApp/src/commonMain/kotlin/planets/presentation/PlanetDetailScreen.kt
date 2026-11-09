@@ -50,6 +50,13 @@ import coil3.compose.AsyncImage
 import getPlatform
 import org.koin.compose.koinInject
 import planets.domain.domain.Planet
+import org.jetbrains.compose.resources.stringResource
+import solarsystemkmp.composeapp.generated.resources.Res
+import solarsystemkmp.composeapp.generated.resources.description
+import solarsystemkmp.composeapp.generated.resources.order
+import solarsystemkmp.composeapp.generated.resources.mass
+import solarsystemkmp.composeapp.generated.resources.volume
+
 
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -220,7 +227,7 @@ private fun PlanetDetailItems(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
-            text = "Description",
+            text = stringResource(Res.string.description),
             fontSize = 26.sp,
             fontWeight = FontWeight.Bold
         )
@@ -236,9 +243,9 @@ private fun PlanetDetailItems(
             .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        DetailCard(label = "Order", value = planet.planetOrder.toString())
-        DetailCard(label = "Mass", value = planet.mass)
-        DetailCard(label = "Volume", value = planet.volume)
+        DetailCard(label = stringResource(Res.string.order), value = planet.planetOrder.toString())
+        DetailCard(label = stringResource(Res.string.mass), value = planet.mass)
+        DetailCard(label = stringResource(Res.string.volume), value = planet.volume)
         DetailCardWithIcon(
             label = planet.source,
             icon = Icons.Default.Link,

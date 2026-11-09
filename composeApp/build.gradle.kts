@@ -68,6 +68,7 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.bundles.koin.common)
             implementation(libs.bundles.coil.common)
+            implementation(libs.ktor.client.core)
 
         }
         commonTest.dependencies {

@@ -1,0 +1,14 @@
+
+<resources>
+    <string name="view">Подробнее</string>
+    <string name="description">Описание</string>
+    <string name="order">Порядковый номер</string>
+    <string name="mass">Масса</string>
+    <string name="volume">Объём</string>
+    <string name="loading_error">Не удалось загрузить планеты. Проверьте подключение к интернету.</string>
+
+
+    <string name="about">О приложении</string>
+    <string name="app_version">Версия</string>
+    <string name="developer">Разработчик</string>
+</resources>

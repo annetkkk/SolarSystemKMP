@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import planets.presentation.PlanetDetailScreen
 import planets.presentation.PlanetsScreen
+import planets.presentation.AboutScreen
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -25,12 +26,19 @@ fun Navigation(
             composable(
                 route = PLANETS_SCREEN_ROUTE
             ) {
+
                 PlanetsScreen(
                     animatedVisibilityScope = this,
                     navigateToPlanetDetailScreen = { planetId ->
-                        navController.navigate(PLANET_DETAIL_SCREEN_ROUTE + "/${planetId}")
+                        navController.navigate(
+                            PLANET_DETAIL_SCREEN_ROUTE + "/${planetId}"
+                        )
+                    },
+                    navigateToAboutScreen = {
+                        navController.navigate(ABOUT_SCREEN_ROUTE)
                     }
                 )
+
             }
             composable(
                 route = "$PLANET_DETAIL_SCREEN_ROUTE/{planetId}",
@@ -46,6 +54,16 @@ fun Navigation(
                     )
                 }
             }
+            composable(
+                route = ABOUT_SCREEN_ROUTE
+            ) {
+                AboutScreen(
+                    navigateBack = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+
         }
     }
 }

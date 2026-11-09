@@ -1,10 +1,25 @@
 package planets.data.service
 
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.request.head
 import planets.domain.domain.Planet
 
 class PlanetsService() {
 
-    fun getPlanets(): List<Planet> {
+    private val client = HttpClient {
+        expectSuccess = true
+
+        install(HttpTimeout) {
+            requestTimeoutMillis = 5000
+        }
+    }
+
+    suspend fun getPlanets(): List<Planet> {
+        client.head(
+            "https://upload.wikimedia.org/wikipedia/commons/4/4a/Mercury_in_true_color.jpg"
+        )
+
         return planets
     }
 
