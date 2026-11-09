@@ -42,3 +42,6 @@ jobs:
 
       - name: Run unit tests
         run: bash ./gradlew :composeApp:desktopTest
+
+      - name: Run Detekt
+        run: bash ./gradlew :composeApp:detekt
