@@ -51,3 +51,31 @@ Explore the wonders of our solar system! Discover detailed information about eac
   <img src="readme-images/web-mobile/planets.png" height=600>
   <img src="readme-images/web-mobile/planet-detail.png" height=600>
 </p>
+
+
+
+## My Android Screenshots
+
+### Home screen
+
+<img src="screenshots/home.png" width="280">
+
+### Planet details
+
+<img src="screenshots/details.png" width="280">
+
+### About screen
+
+<img src="screenshots/about.png" width="280">
+
+### Error handling — Russian
+
+<img src="screenshots/error-ru.png" width="280">
+
+### Error handling — English
+
+<img src="screenshots/error-en.png" width="280">
+
+## Release
+
+Download the signed APK and AAB from [GitHub Releases](https://github.com/annetkkk/SolarSystemKMP/releases/tag/v1.0.0).
